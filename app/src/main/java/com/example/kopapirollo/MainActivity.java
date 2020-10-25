@@ -1,7 +1,9 @@
 package com.example.kopapirollo;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView emberkiir, gepkiir, dontetlen;
     private Button btnKo, btnPapir, btnOllo;
     private String gepValasztas, emberValasztas;
-    private int gepSzamol,emberSzamol,dontetlenSzamol,elet;
+    private int gepSzamol,emberSzamol,dontetlenSzamol,eletEmber,eletGep;
     Random rnd;
 
     @Override
@@ -29,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         rnd = new Random();
         init();
-        elet = 3;
+        eletEmber = 3;
+        eletGep= 3;
 
 
 
@@ -129,8 +132,56 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void Nyertvege(){
+
+        AlertDialog.Builder build = new AlertDialog.Builder(MainActivity.this);
+        build.setMessage("Be akarja zárni az alkalmazást vagy folytatja a játékot? ")
+                .setCancelable(false)
+                .setPositiveButton("Bezár", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("Folytat", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onStop();
+                        onRestart();
+                    }
+                });
+        AlertDialog alert = build.create();
+        alert.setTitle("Gratulálnk ön nyert !!!");
+        alert.show();
+    }
+
+    public void Vesztesvege(){
+
+        AlertDialog.Builder build = new AlertDialog.Builder(MainActivity.this);
+        build.setMessage("Be akarja zárni az alkalmazást vagy folytatja a játékot? ")
+                .setCancelable(false)
+                .setPositiveButton("Bezár", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("Folytat", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onStop();
+                        onRestart();
+                    }
+                });
+        AlertDialog alert = build.create();
+        alert.setTitle("Sajnos ön kikapott :-(");
+        alert.show();
+    }
+
     private void eletCsokkentesGep() {
-        switch (elet){
+        switch (eletGep){
             case 3:
                 gimageHp1.setImageResource(R.drawable.heart1);
                 break;
@@ -143,14 +194,14 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-        elet--;
-        if (elet < 1 || gepSzamol >= 3){
-
+        eletGep--;
+        if (eletGep < 1 || gepSzamol >= 3){
+            Nyertvege();
         }
     }
 
     private void eletCsokkentesEmber() {
-        switch (elet){
+        switch (eletEmber){
             case 3:
                 eimageHp1.setImageResource(R.drawable.heart1);
                 break;
@@ -163,9 +214,9 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-        elet--;
-        if (elet < 1 || emberSzamol >= 3){
-
+        eletEmber--;
+        if (eletEmber < 1 || emberSzamol >= 3){
+            Vesztesvege();
         }
     }
 
